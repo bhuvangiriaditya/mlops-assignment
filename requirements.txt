@@ -1,0 +1,16 @@
+torch
+torchvision
+numpy
+pandas
+scikit-learn
+mlflow
+dvc
+fastapi
+uvicorn
+pytest
+httpx
+pydantic
+python-multipart
+# Build deps
+setuptools
+wheel

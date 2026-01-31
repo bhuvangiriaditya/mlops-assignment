@@ -1,0 +1,36 @@
+name: MLOps CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run Tests
+      run: |
+        pytest tests/
+        
+    - name: Build Docker Image
+      run: |
+        # Create dummy model.pth for build if not present (real one should hold DVC or similar, but for assignment we might skip)
+        # Note: In real setup, we 'dvc pull' here.
+        # For this mock CI, we create a placeholder if it doesn't exist to allow build pass
+        touch model.pth 
+        docker build -t cats-dogs-classifier:latest .
