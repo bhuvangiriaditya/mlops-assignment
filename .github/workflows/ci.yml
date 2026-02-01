@@ -42,7 +42,7 @@ jobs:
 
     - name: Load Dataset
       run: |
-          bash scripts/load_data.sh
+          bash scripts/setup_data.sh
 
     - name: Run unit tests
       run: |
