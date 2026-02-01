@@ -65,7 +65,7 @@ jobs:
 
     - name: Run training
       run: |
-        python train.py
+        python src/train.py
 
     - name: Push model to Hugging Face
       run: |
