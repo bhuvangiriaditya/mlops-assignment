@@ -104,5 +104,5 @@ jobs:
 
     - name: Push Docker image
       run: |
-        docker push aditya3298/mlops:${{ env.MODEL_VERSION }}
-        docker push aditya3298/mlops:latest
+        docker push aditya3298/mlops-2:${{ env.MODEL_VERSION }}
+        docker push aditya3298/mlops-2:latest
