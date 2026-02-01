@@ -63,9 +63,9 @@ jobs:
           htmlcov/
           coverage.xml
 
-    - name: Run training
-      run: |
-        python src/train.py
+    # - name: Run training
+    #   run: |
+    #     python src/train.py
 
     - name: Push model to Hugging Face
       run: |
