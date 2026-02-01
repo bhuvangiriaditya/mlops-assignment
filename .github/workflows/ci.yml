@@ -32,13 +32,14 @@ jobs:
         KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
         KAGGLE_TOKEN: ${{ secrets.KAGGLE_TOKEN }}
       run: |
-        cat > kaggle.json <<EOF
+        mkdir -p ~/.kaggle
+        cat > ~/.kaggle/kaggle.json <<EOF
         {
           "username": "${KAGGLE_USERNAME}",
           "key": "${KAGGLE_TOKEN}"
         }
         EOF
-        chmod 755 kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
 
     - name: Load Dataset
       run: |
