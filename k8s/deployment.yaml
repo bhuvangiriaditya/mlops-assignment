@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: classifier-container
-        image: cats-dogs-classifier:latest
+        image: aditya3298/mlops-2:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
