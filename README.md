@@ -151,7 +151,7 @@ Manual run via GitHub Actions `workflow_dispatch`:
 Required secrets:
 - `DOCKERHUB_USERNAME`
 - `DOCKERHUB_TOKEN`
-- `KUBE_CONFIG_DATA` (base64 kubeconfig) for deploy job
+- `KUBE_CONFIG_DATA` (plain kubeconfig content) for deploy job
 
 ## 8. Monitoring and Logging
 
