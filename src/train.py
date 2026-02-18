@@ -26,7 +26,7 @@ def train(epochs=5, batch_size=32, lr=0.001):
             return
 
         # Model
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        device = torch.device('cuda' if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else 'cpu')
         model = SimpleCNN().to(device)
         criterion = nn.BCEWithLogitsLoss()
         optimizer = optim.Adam(model.parameters(), lr=lr)
