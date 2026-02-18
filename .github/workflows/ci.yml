@@ -37,11 +37,8 @@ jobs:
           if [ -f model.pth ]; then
             echo "Using repository model artifact."
           else
-            python - <<'PY'
-            import torch
-            from src.model import SimpleCNN
-            torch.save(SimpleCNN().state_dict(), "model.pth")
-            PY
+            python -c "import torch; from src.model import SimpleCNN; torch.save(SimpleCNN().state_dict(), 'model.pth')"
+            echo "Generated model.pth for CI."
           fi
 
       - name: Build Docker image
@@ -57,7 +54,12 @@ jobs:
 
       - name: Print container logs on failure
         if: failure()
-        run: docker logs cats-dogs-api
+        run: |
+          if docker ps -a --format '{{.Names}}' | grep -q '^cats-dogs-api$'; then
+            docker logs cats-dogs-api || true
+          else
+            echo "Container cats-dogs-api not found. Skipping docker logs."
+          fi
 
       - name: Cleanup container
         if: always()
