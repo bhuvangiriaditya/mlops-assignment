@@ -8,7 +8,6 @@ env:
 
 jobs:
   deploy-k8s:
-    if: secrets.KUBE_CONFIG_DATA != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -16,6 +15,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate kubeconfig secret
+        run: |
+          if [ -z "${{ secrets.KUBE_CONFIG_DATA }}" ]; then
+            echo "KUBE_CONFIG_DATA is empty or not configured."
+            exit 1
+          fi
 
       - name: Setup kubectl
         uses: azure/setup-kubectl@v4
