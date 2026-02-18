@@ -25,15 +25,10 @@ TEST_IMG="$(find data/subset/cats data/raw/PetImages/Cat -name '*.jpg' -print -q
 
 if [[ -z "${TEST_IMG}" ]]; then
     mkdir -p "${TMP_DIR}"
-    TEST_IMG="${TMP_DIR}/synthetic_test.jpg"
-    TMP_DIR="${TMP_DIR}" python - <<'PY'
-from PIL import Image
-import os
-
-img = Image.new("RGB", (224, 224), color=(128, 96, 64))
-out_path = os.path.join(os.environ["TMP_DIR"], "synthetic_test.jpg")
-img.save(out_path, format="JPEG")
-PY
+    TEST_IMG="${TMP_DIR}/synthetic_test.png"
+    cat <<'B64' | base64 --decode > "${TEST_IMG}"
+iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO5nX6sAAAAASUVORK5CYII=
+B64
 fi
 
 response="$(curl -fsS -X POST -F "file=@${TEST_IMG}" "${BASE_URL}/predict")"
