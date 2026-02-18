@@ -140,15 +140,17 @@ Triggered on push/PR to `main`:
 2. run tests
 3. build Docker image
 4. run container and execute smoke test
-5. on push to `main`, push image to GHCR with `${sha}` and `latest` tags
+5. on push to `main`, push image to Docker Hub `aditya3298/mlops-2` with `${sha}` and `latest` tags
 
 ### CD (`.github/workflows/cd.yaml`)
 Manual run via GitHub Actions `workflow_dispatch`:
-1. pick `ghcr.io/<owner>/cats-dogs-classifier:latest`
+1. pick `aditya3298/mlops-2:latest`
 2. deploy/update Kubernetes workload (if `KUBE_CONFIG_DATA` secret is set)
 3. run post-deploy smoke test
 
 Required secrets:
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
 - `KUBE_CONFIG_DATA` (base64 kubeconfig) for deploy job
 
 ## 8. Monitoring and Logging

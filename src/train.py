@@ -69,6 +69,8 @@ def train(epochs=5, batch_size=32, lr=0.001):
             
         # Log model
         mlflow.pytorch.log_model(model, "model")
+        torch.save(model.state_dict(), "model.pth")
+        print("Saved trained weights to model.pth")
         
         # Test Evaluation
         print("Evaluating on Test Set...")
