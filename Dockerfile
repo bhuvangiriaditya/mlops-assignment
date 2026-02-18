@@ -9,9 +9,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install python dependencies
 COPY requirements.txt .
-# Pin torch cpu version to reduce image size
-RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir \
+    --index-url https://download.pytorch.org/whl/cpu \
+    --extra-index-url https://pypi.org/simple \
+    -r requirements.txt
 
 # Copy application code
 COPY src/ src/

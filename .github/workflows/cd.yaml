@@ -1,0 +1,52 @@
+name: MLOps CD
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/cats-dogs-classifier
+
+jobs:
+  deploy-k8s:
+    if: secrets.KUBE_CONFIG_DATA != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p "${HOME}/.kube"
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 --decode > "${HOME}/.kube/config"
+
+      - name: Apply manifests
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Update deployment image
+        run: |
+          kubectl set image deployment/cats-dogs-classifier-deploy \
+            classifier-container=${{ env.IMAGE_NAME }}:latest
+          kubectl rollout status deployment/cats-dogs-classifier-deploy --timeout=180s
+
+      - name: Post-deploy smoke test
+        run: |
+          kubectl port-forward svc/cats-dogs-classifier-svc 8000:80 >/tmp/port-forward.log 2>&1 &
+          echo $! > /tmp/port-forward.pid
+          sleep 5
+          chmod +x scripts/smoke_test.sh
+          ./scripts/smoke_test.sh
+
+      - name: Cleanup port-forward
+        if: always()
+        run: |
+          if [ -f /tmp/port-forward.pid ]; then
+            kill "$(cat /tmp/port-forward.pid)" || true
+          fi

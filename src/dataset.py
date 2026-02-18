@@ -1,4 +1,3 @@
-import os
 import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split, Dataset
@@ -17,7 +16,7 @@ class TransformedSubset(Dataset):
     def __len__(self):
         return len(self.subset)
 
-def get_dataloaders(data_dir="data/raw", batch_size=32):
+def get_dataloaders(data_dir="data/raw", batch_size=32, num_workers=2):
     # Initial load (no transform to get PIL images)
     try:
         full_dataset = datasets.ImageFolder(data_dir)
@@ -56,8 +55,8 @@ def get_dataloaders(data_dir="data/raw", batch_size=32):
     val_ds = TransformedSubset(val_subset, transform=test_transform)
     test_ds = TransformedSubset(test_subset, transform=test_transform)
     
-    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=2)
-    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=2)
-    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False, num_workers=2)
+    train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
+    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers)
     
     return train_loader, val_loader, test_loader

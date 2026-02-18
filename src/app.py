@@ -23,16 +23,24 @@ async def startup_event():
 # M5: Logging & Metrics
 import time
 import logging
+from threading import Lock
 from starlette.middleware.base import BaseHTTPMiddleware
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("api")
+metrics_lock = Lock()
+request_count_total = 0
+latency_seconds_sum = 0.0
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
+        global request_count_total, latency_seconds_sum
         start_time = time.time()
         response = await call_next(request)
         process_time = time.time() - start_time
+        with metrics_lock:
+            request_count_total += 1
+            latency_seconds_sum += process_time
         logger.info(f"{request.method} {request.url.path} - {response.status_code} - {process_time:.4f}s")
         return response
 
@@ -40,11 +48,15 @@ app.add_middleware(LoggingMiddleware)
 
 @app.get("/metrics")
 def metrics():
-    # Simple mockup metrics
+    with metrics_lock:
+        req_count = request_count_total
+        latency_sum = latency_seconds_sum
+    avg_latency = (latency_sum / req_count) if req_count else 0.0
     return {
-        "status": "up", 
-        "request_count_total": 42, # Mock
-        "latency_seconds_sum": 1.2 # Mock
+        "status": "up",
+        "request_count_total": req_count,
+        "latency_seconds_sum": round(latency_sum, 6),
+        "latency_seconds_avg": round(avg_latency, 6),
     }
 
 @app.get("/health")

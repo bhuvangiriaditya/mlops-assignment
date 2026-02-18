@@ -2,35 +2,84 @@ name: MLOps CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/cats-dogs-classifier
 
 jobs:
-  build-and-test:
+  test-build-smoke:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: read
+      packages: write
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: 3.9
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
-    - name: Run Tests
-      run: |
-        pytest tests/
-        
-    - name: Build Docker Image
-      run: |
-        # Create dummy model.pth for build if not present (real one should hold DVC or similar, but for assignment we might skip)
-        # Note: In real setup, we 'dvc pull' here.
-        # For this mock CI, we create a placeholder if it doesn't exist to allow build pass
-        touch model.pth 
-        docker build -t cats-dogs-classifier:latest .
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run unit tests
+        run: pytest
+
+      - name: Ensure model artifact exists
+        run: |
+          if [ -f model.pth ]; then
+            echo "Using repository model artifact."
+          else
+            python - <<'PY'
+            import torch
+            from src.model import SimpleCNN
+            torch.save(SimpleCNN().state_dict(), "model.pth")
+            PY
+          fi
+
+      - name: Build Docker image
+        run: docker build -t cats-dogs-classifier:${{ github.sha }} .
+
+      - name: Run service container
+        run: docker run -d --rm --name cats-dogs-api -p 8000:8000 cats-dogs-classifier:${{ github.sha }}
+
+      - name: Smoke test container
+        run: |
+          chmod +x scripts/smoke_test.sh
+          ./scripts/smoke_test.sh
+
+      - name: Print container logs on failure
+        if: failure()
+        run: docker logs cats-dogs-api
+
+      - name: Cleanup container
+        if: always()
+        run: docker rm -f cats-dogs-api || true
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag image for GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker tag cats-dogs-classifier:${{ github.sha }} ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker tag cats-dogs-classifier:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
+
+      - name: Push image to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          docker push ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker push ${{ env.IMAGE_NAME }}:latest
