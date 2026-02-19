@@ -98,4 +98,4 @@ Deliverables
 manifests), and Trained model artefacts (If video file too large, Kindly share the link) 
  
 2. Screen recording  of less than 5 minutes demonstrating the complete MLOps workflow from 
-code change to deployed model prediction 
+code change to deployed model prediction
