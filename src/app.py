@@ -38,9 +38,13 @@ class LoggingMiddleware(BaseHTTPMiddleware):
         start_time = time.time()
         response = await call_next(request)
         process_time = time.time() - start_time
-        with metrics_lock:
-            request_count_total += 1
-            latency_seconds_sum += process_time
+        
+        # Only count non-metrics, non-health requests
+        if request.url.path not in ["/metrics", "/health"]:
+            with metrics_lock:
+                request_count_total += 1
+                latency_seconds_sum += process_time
+        
         logger.info(f"{request.method} {request.url.path} - {response.status_code} - {process_time:.4f}s")
         return response
 
