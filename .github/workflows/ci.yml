@@ -29,8 +29,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run unit tests
-        run: pytest
+      - name: Run unit tests with coverage
+        run: |
+          pytest \
+            --junitxml=test-results.xml \
+            --cov=src \
+            --cov-report=term-missing \
+            --cov-report=xml:coverage.xml \
+            --cov-report=html:coverage_html
 
       - name: Ensure model artifact exists
         run: |
@@ -49,21 +55,35 @@ jobs:
 
       - name: Smoke test container
         run: |
+          set -o pipefail
           chmod +x scripts/smoke_test.sh
-          ./scripts/smoke_test.sh
+          ./scripts/smoke_test.sh 2>&1 | tee smoke-test-report.txt
 
-      - name: Print container logs on failure
-        if: failure()
+      - name: Capture container logs
+        if: always()
         run: |
           if docker ps -a --format '{{.Names}}' | grep -q '^cats-dogs-api$'; then
-            docker logs cats-dogs-api || true
+            docker logs cats-dogs-api > container-logs.txt 2>&1 || true
           else
-            echo "Container cats-dogs-api not found. Skipping docker logs."
+            echo "Container cats-dogs-api not found." > container-logs.txt
           fi
 
       - name: Cleanup container
         if: always()
         run: docker rm -f cats-dogs-api || true
+
+      - name: Upload CI reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-reports-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            test-results.xml
+            coverage.xml
+            coverage_html/
+            smoke-test-report.txt
+            container-logs.txt
 
       - name: Log in to Docker Hub
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

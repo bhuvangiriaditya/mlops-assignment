@@ -141,6 +141,7 @@ Triggered on push/PR to `main`:
 3. build Docker image
 4. run container and execute smoke test
 5. on push to `main`, push image to Docker Hub `aditya3298/mlops-2` with `${sha}` and `latest` tags
+6. upload CI artifacts: JUnit report, coverage XML/HTML, smoke test log, container log
 
 ### CD (`.github/workflows/cd.yaml`)
 Manual run via GitHub Actions `workflow_dispatch`:
