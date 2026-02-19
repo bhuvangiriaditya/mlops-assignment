@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/a03c57d5ba9f499d8cba70e4d4d5e41c/artifacts
+end_time: 1769880151066
+entry_point_name: ''
+experiment_id: '244507833141742172'
+lifecycle_stage: active
+run_id: a03c57d5ba9f499d8cba70e4d4d5e41c
+run_name: fearless-boar-819
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769879726732
+status: 4
+tags: []
+user_id: badrikishoremurthy

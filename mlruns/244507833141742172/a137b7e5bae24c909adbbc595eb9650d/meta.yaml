@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/a137b7e5bae24c909adbbc595eb9650d/artifacts
+end_time: 1769880255397
+entry_point_name: ''
+experiment_id: '244507833141742172'
+lifecycle_stage: active
+run_id: a137b7e5bae24c909adbbc595eb9650d
+run_name: nebulous-ray-798
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769880221942
+status: 3
+tags: []
+user_id: badrikishoremurthy

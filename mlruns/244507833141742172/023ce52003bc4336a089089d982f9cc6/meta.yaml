@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/023ce52003bc4336a089089d982f9cc6/artifacts
+end_time: 1769880200903
+entry_point_name: ''
+experiment_id: '244507833141742172'
+lifecycle_stage: active
+run_id: 023ce52003bc4336a089089d982f9cc6
+run_name: brawny-lamb-780
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769880152878
+status: 4
+tags: []
+user_id: badrikishoremurthy

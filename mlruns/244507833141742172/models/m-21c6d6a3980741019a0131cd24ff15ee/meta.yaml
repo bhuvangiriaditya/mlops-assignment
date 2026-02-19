@@ -1,0 +1,10 @@
+artifact_location: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/models/m-21c6d6a3980741019a0131cd24ff15ee/artifacts
+creation_timestamp: 1769880245348
+experiment_id: '244507833141742172'
+last_updated_timestamp: 1769880247546
+model_id: m-21c6d6a3980741019a0131cd24ff15ee
+model_type: null
+name: model
+source_run_id: a137b7e5bae24c909adbbc595eb9650d
+status: 2
+status_message: null

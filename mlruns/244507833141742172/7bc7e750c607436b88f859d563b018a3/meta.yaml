@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/7bc7e750c607436b88f859d563b018a3/artifacts
+end_time: 1769880197529
+entry_point_name: ''
+experiment_id: '244507833141742172'
+lifecycle_stage: active
+run_id: 7bc7e750c607436b88f859d563b018a3
+run_name: luxuriant-finch-254
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1769880197523
+status: 4
+tags: []
+user_id: badrikishoremurthy

@@ -1,0 +1,23 @@
+artifact_path: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/models/m-21c6d6a3980741019a0131cd24ff15ee/artifacts
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.9.6
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.8.0
+mlflow_version: 3.1.4
+model_id: m-21c6d6a3980741019a0131cd24ff15ee
+model_size_bytes: 52356791
+model_uuid: m-21c6d6a3980741019a0131cd24ff15ee
+prompts: null
+run_id: a137b7e5bae24c909adbbc595eb9650d
+utc_time_created: '2026-01-31 17:24:05.356456'

@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/badrikishoremurthy/.gemini/antigravity/playground/mlops-assignment/mlruns/244507833141742172/7be07c2a02a84a82aaffcf4d060fcce5/artifacts
+end_time: 1771424817286
+entry_point_name: ''
+experiment_id: '244507833141742172'
+lifecycle_stage: active
+run_id: 7be07c2a02a84a82aaffcf4d060fcce5
+run_name: spiffy-squirrel-467
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1771424699003
+status: 3
+tags: []
+user_id: badrikishoremurthy
