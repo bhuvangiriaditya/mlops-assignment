@@ -31,20 +31,29 @@ logger = logging.getLogger("api")
 metrics_lock = Lock()
 request_count_total = 0
 latency_seconds_sum = 0.0
+request_count_by_endpoint = {
+    "/health": 0,
+    "/metrics": 0,
+    "/predict": 0,
+}
+request_count_other = 0
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
-        global request_count_total, latency_seconds_sum
+        global request_count_total, latency_seconds_sum, request_count_other
+        path = request.url.path
         start_time = time.time()
         response = await call_next(request)
         process_time = time.time() - start_time
-        
-        # Only count non-metrics, non-health requests
-        if request.url.path not in ["/metrics", "/health"]:
-            with metrics_lock:
-                request_count_total += 1
-                latency_seconds_sum += process_time
-        
+
+        with metrics_lock:
+            request_count_total += 1
+            latency_seconds_sum += process_time
+            if path in request_count_by_endpoint:
+                request_count_by_endpoint[path] += 1
+            else:
+                request_count_other += 1
+
         logger.info(f"{request.method} {request.url.path} - {response.status_code} - {process_time:.4f}s")
         return response
 
@@ -55,10 +64,18 @@ def metrics():
     with metrics_lock:
         req_count = request_count_total
         latency_sum = latency_seconds_sum
+        endpoint_breakdown = dict(request_count_by_endpoint)
+        other_count = request_count_other
     avg_latency = (latency_sum / req_count) if req_count else 0.0
     return {
         "status": "up",
         "request_count_total": req_count,
+        "request_count_breakdown": {
+            "/health": endpoint_breakdown["/health"],
+            "/metrics": endpoint_breakdown["/metrics"],
+            "/predict": endpoint_breakdown["/predict"],
+            "other": other_count,
+        },
         "latency_seconds_sum": round(latency_sum, 6),
         "latency_seconds_avg": round(avg_latency, 6),
     }
