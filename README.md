@@ -156,7 +156,7 @@ Triggered on push/PR to `main`:
 6. upload CI artifacts: JUnit report, coverage XML/HTML, smoke test log, container log
 
 ### CD (`.github/workflows/cd.yaml`)
-Manual run via GitHub Actions `workflow_dispatch`:
+Triggered automatically after `MLOps CI` completes successfully on `main`:
 1. pick `aditya3298/mlops-2:latest`
 2. deploy/update Kubernetes workload (if `KUBE_CONFIG_DATA` secret is set)
 3. run post-deploy smoke test
@@ -204,4 +204,4 @@ Implemented in `src/app.py`:
 ## 10. Notes
 
 - `model.pth` must exist for API startup and CD publish validation.
-- CD is intentionally manual (per current project setup) from Actions UI.
+- CD runs automatically after CI succeeds on `main`.
