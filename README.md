@@ -64,6 +64,18 @@ chmod +x scripts/setup_data.sh
 ./scripts/setup_data.sh
 ```
 
+### DVC-tracked data
+The dataset folders are tracked with DVC metadata:
+- `data/raw.dvc`
+- `data/subset.dvc`
+- `data/processed.dvc`
+
+After changing data, update metadata:
+```bash
+dvc add data/raw data/subset data/processed
+git add data/raw.dvc data/subset.dvc data/processed.dvc .gitignore
+```
+
 ### Train model (MLflow tracked)
 ```bash
 python -m src.train --epochs 5 --batch_size 32 --lr 0.001
@@ -167,7 +179,7 @@ Implemented in `src/app.py`:
 
 ### M1: Model Development & Experiment Tracking
 - Git-based source versioning: repo structure and code.
-- DVC initialized (`.dvc/` present).
+- DVC dataset versioning configured (`data/raw.dvc`, `data/subset.dvc`, `data/processed.dvc`).
 - Baseline CNN implemented (`src/model.py`), model artifact `model.pth`.
 - MLflow experiment tracking for params and metrics (`src/train.py`).
 
