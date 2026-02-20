@@ -1,6 +1,10 @@
 # MLOps Assignment 2: Cats vs Dogs Classification
 
-Live Link: https://cat-dogs-classifier.c-321a6c0.stage.kyma.ondemand.com/docs
+Live Link: https://cat-dogs-classifier.c-321a6c0.stage.kyma.ondemand.com/docs<br />
+Github Link: https://github.com/bhuvangiriaditya/mlops-assignment/tree/main<br />
+Model Artifact: https://drive.google.com/file/d/1rI8vEjJljLW1VRhBva9F-rxfDRyU5jPO/view?usp=sharing<br />
+Video Demo: https://drive.google.com/file/d/1Oj7ciSivXdJYJslwl2M1zPdEQUU1x0oe/view?usp=sharing<br />
+Video Demo(Youtube link): https://www.youtube.com/watch?v=TJVIcx6pfSI
 
 End-to-end MLOps pipeline for binary image classification (`cat` vs `dog`) with:
 - model development and experiment tracking
