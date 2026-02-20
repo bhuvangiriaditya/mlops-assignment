@@ -2,7 +2,7 @@
 
 Live Link: https://cat-dogs-classifier.c-321a6c0.stage.kyma.ondemand.com/docs<br />
 Github Link: https://github.com/bhuvangiriaditya/mlops-assignment/tree/main<br />
-Model Artifact: https://drive.google.com/file/d/1rI8vEjJljLW1VRhBva9F-rxfDRyU5jPO/view?usp=sharing<br />
+Model Artifact: https://drive.google.com/file/d/1xPQE3cov-7a2_nYuLx09gYX4_j_k0Ygn/view?usp=drive_link<br />
 Video Demo: https://drive.google.com/file/d/1Oj7ciSivXdJYJslwl2M1zPdEQUU1x0oe/view?usp=sharing<br />
 Video Demo(Youtube link): https://www.youtube.com/watch?v=TJVIcx6pfSI
 
